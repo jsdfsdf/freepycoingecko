@@ -7,16 +7,13 @@ from requests.packages.urllib3.util.retry import Retry
 from .utils import func_args_preprocessing
 
 
-class CoinGeckoAPI:
+class FreeCoinGeckoAPI:
     __API_URL_BASE = 'https://api.coingecko.com/api/v3/'
     __PRO_API_URL_BASE = 'https://pro-api.coingecko.com/api/v3/'
 
-    def __init__(self, api_key: str = '', retries=5):
+    def __init__(self, api_key, retries=5):
         self.api_key = api_key
-        if api_key:
-            self.api_base_url = self.__PRO_API_URL_BASE
-        else:
-            self.api_base_url = self.__API_URL_BASE
+        self.api_base_url = self.__API_URL_BASE
         self.request_timeout = 120
 
         self.session = requests.Session()
@@ -48,7 +45,7 @@ class CoinGeckoAPI:
     def __api_url_params(self, api_url, params, api_url_has_params=False):
         # if using pro version of CoinGecko, inject key in every call
         if self.api_key:
-            params['x_cg_pro_api_key'] = self.api_key
+            params['x-cg-demo-api-key'] = self.api_key
 
         if params:
             # if api_url contains already params and there is already a '?' avoid
